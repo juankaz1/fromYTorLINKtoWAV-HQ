@@ -2,22 +2,17 @@
 
 Descarga audio o video desde enlaces compatibles con `yt-dlp` y guardalos en tu computadora. La aplicacion para Windows acepta varios enlaces a la vez, muestra el progreso de cada uno y permite escoger una carpeta de destino. Usa solo contenido para el que tengas permisos de acceso y descarga.
 
-## Instalar en Windows
+## Instalacion facil en Windows
 
-1. En la pagina de este repositorio, pulsa **Code > Download ZIP** y extrae el ZIP en una carpeta permanente (por ejemplo, Documentos). Tambien puedes clonarlo con Git. No ejecutes el lanzador desde dentro del ZIP.
-2. Instala [Python 3.9 o posterior](https://www.python.org/downloads/) y [FFmpeg](https://ffmpeg.org/download.html). FFmpeg debe estar en el `PATH`. Abre una nueva ventana de PowerShell y comprueba `py -3 --version` y `ffmpeg -version`.
-3. Abre la carpeta extraida; escribe `powershell` en la barra de direcciones del Explorador de archivos y pulsa Enter. En esa terminal ejecuta una sola vez:
+1. En la pagina de este repositorio pulsa **Code > Download ZIP** y extrae la carpeta en un lugar permanente (por ejemplo, Documentos). No abras los `.cmd` directamente dentro del ZIP.
+2. Haz doble clic en **Instalar.cmd** dentro de la carpeta extraida. Deja la ventana abierta hasta que diga "Listo"; requiere internet. Detecta Python 3.9 o posterior con Tkinter y, si falta, intenta instalar Python 3.12 para tu usuario con `winget`. Despues prepara `.venv`, instala `yt-dlp` y una copia privada de FFmpeg. No necesitas instalar FFmpeg ni configurar el `PATH` manualmente.
+3. Haz doble clic en **Abrir descargador.cmd** para usar la aplicacion.
 
-```powershell
-py -3 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install --upgrade yt-dlp
-```
-
-Si tu equipo no reconoce `py`, usa `python -m venv .venv` en el primer comando. Para actualizar la compatibilidad con sitios que cambian, repite el comando de `pip install --upgrade yt-dlp`.
+Si `winget` no esta disponible o falla, instala [Python para Windows](https://www.python.org/downloads/windows/) con pip y Tcl/Tk, y ejecuta **Instalar.cmd** otra vez. Si el instalador acaba de instalar Python pero aun no lo detecta, cierra y vuelve a abrir el Explorador antes de repetirlo. El proceso es seguro de repetir cuando quieras actualizar `yt-dlp`. Es una instalacion local de doble clic, **no un ejecutable autonomo**: necesita Python disponible en el equipo y conexion a internet durante la preparacion.
 
 ## Abrir y usar
 
-Haz doble clic en **Abrir descargador.cmd** desde la carpeta extraida. El lanzador usa el Python de `.venv`, por lo que ese entorno debe existir. Para tenerlo en el escritorio, haz clic derecho en el archivo, elige **Mostrar mas opciones > Enviar a > Escritorio (crear acceso directo)**. No muevas el archivo `.cmd` por separado: el acceso directo debe apuntar al archivo que permanece junto al proyecto.
+Haz doble clic en **Abrir descargador.cmd** desde la carpeta extraida tras instalar. Para tenerlo en el escritorio, haz clic derecho en el archivo, elige **Mostrar mas opciones > Enviar a > Escritorio (crear acceso directo)**. No muevas el `.cmd` por separado: el acceso directo debe apuntar al archivo que permanece junto al proyecto.
 
 1. Pega uno o varios enlaces en el campo de texto, incluso dentro de un parrafo o separados por comas, espacios o saltos de linea. Los enlaces repetidos se procesan una sola vez.
 2. Elige una carpeta existente con **Examinar...**, escribela en el campo de destino o escoge una usada recientemente.

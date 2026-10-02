@@ -74,6 +74,11 @@ def download_batch(links: list[str], destination: Path, report, mode: str = "wav
 
 
 def main() -> None:
+    try:
+        DEFAULT_FOLDER.mkdir(parents=True, exist_ok=True)
+        initial_folder = DEFAULT_FOLDER
+    except OSError:
+        initial_folder = Path.home()
     root = tk.Tk()
     root.title("Enlaces a WAV y video")
     root.geometry("810x610")
@@ -86,7 +91,7 @@ def main() -> None:
     frame.rowconfigure(1, weight=1)
     frame.rowconfigure(8, weight=1)
 
-    folder = tk.StringVar(value=str(DEFAULT_FOLDER))
+    folder = tk.StringVar(value=str(initial_folder))
     mode = tk.StringVar(value="wav")
     quality = tk.StringVar(value="Mejor disponible")
     status = tk.StringVar(value="Listo")

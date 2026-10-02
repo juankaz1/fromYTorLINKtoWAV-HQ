@@ -14,6 +14,18 @@ spec.loader.exec_module(downloader)
 
 
 class DownloadTests(unittest.TestCase):
+    def test_prefers_local_ffmpeg_when_installed(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            local = Path(temp_dir) / ".tools" / "ffmpeg.exe"
+            local.parent.mkdir()
+            local.touch()
+            with patch.object(downloader, "__file__", str(Path(temp_dir) / SCRIPT.name)):
+                self.assertEqual(downloader.ffmpeg_executable(), str(local))
+                self.assertEqual(downloader.ffmpeg_options(), {"ffmpeg_location": str(local)})
+                local.unlink()
+                self.assertEqual(downloader.ffmpeg_executable(), "ffmpeg")
+                self.assertEqual(downloader.ffmpeg_options(), {})
+
     def test_available_video_qualities_ignore_audio_and_duplicates(self):
         import yt_dlp
 

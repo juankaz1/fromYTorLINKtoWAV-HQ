@@ -13,6 +13,16 @@ from typing import Optional
 from urllib.parse import urlparse
 
 
+def ffmpeg_executable() -> str:
+    local = Path(__file__).resolve().parent / ".tools" / "ffmpeg.exe"
+    return str(local) if local.is_file() else "ffmpeg"
+
+
+def ffmpeg_options() -> dict:
+    local = Path(__file__).resolve().parent / ".tools" / "ffmpeg.exe"
+    return {"ffmpeg_location": str(local)} if local.is_file() else {}
+
+
 def validate_url(url: str) -> None:
     parsed = urlparse(url)
     if parsed.scheme not in ("http", "https") or not parsed.hostname:
@@ -29,7 +39,8 @@ def available_video_qualities(url: str) -> list[int]:
 
     validate_url(url)
     try:
-        with YoutubeDL({"skip_download": True, "noplaylist": True, "quiet": True, "no_warnings": True}) as downloader:
+        with YoutubeDL({"skip_download": True, "noplaylist": True, "quiet": True, "no_warnings": True,
+                **ffmpeg_options()}) as downloader:
             info = downloader.extract_info(url, download=False)
     except DownloadError as exc:
         raise ValueError(f"No se pudieron consultar las calidades: {exc}") from exc
@@ -56,6 +67,7 @@ def download_video(url: str, output_dir: Path, height: Optional[int] = None) -> 
         options = {
             "format": video_format,
             "merge_output_format": "mkv",
+            **ffmpeg_options(),
             "noplaylist": True,
             "outtmpl": str(Path(temp_dir) / "%(title).180B [%(id)s].%(ext)s"),
             "quiet": True,
@@ -94,6 +106,7 @@ def download_wav(url: str, output_dir: Path) -> Path:
     with tempfile.TemporaryDirectory() as temp_dir:
         options = {
             "format": "bestaudio/best",
+            **ffmpeg_options(),
             "noplaylist": True,
             "outtmpl": str(Path(temp_dir) / "%(title).180B [%(id)s].%(ext)s"),
             "quiet": True,
@@ -121,13 +134,13 @@ def download_wav(url: str, output_dir: Path) -> Path:
 
         try:
             subprocess.run(
-                ["ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "error", "-n",
+                [ffmpeg_executable(), "-nostdin", "-hide_banner", "-loglevel", "error", "-n",
                  "-i", str(source), "-map", "0:a:0", "-vn", "-c:a", "pcm_s24le",
                  "-map_metadata", "0", str(target)],
                 check=True, capture_output=True, text=True,
             )
         except FileNotFoundError as exc:
-            raise ValueError("Instala FFmpeg y anade ffmpeg al PATH para convertir a WAV.") from exc
+            raise ValueError("Ejecuta Instalar.cmd para preparar FFmpeg antes de convertir a WAV.") from exc
         except subprocess.CalledProcessError as exc:
             target.unlink(missing_ok=True)
             raise ValueError(f"FFmpeg no pudo convertir el audio: {exc.stderr.strip()}") from exc
