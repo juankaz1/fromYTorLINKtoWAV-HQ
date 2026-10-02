@@ -4,6 +4,8 @@
 
 [Español](#español) · [English](#english)
 
+![Ventana de la aplicación: enlaces, formato, calidad, carpeta y resultados / App window: links, format, quality, destination and results](docs/interfaz-publica.png)
+
 ## Español
 
 ### Instalar y abrir
@@ -16,9 +18,9 @@ La instalación inicial puede tardar varios minutos. Puedes ejecutar **Instalar.
 
 ### Descargar
 
-1. Pega uno o varios enlaces, incluso dentro de un párrafo, y elige una carpeta de destino existente.
-2. Selecciona **Audio WAV** y pulsa **Descargar WAV**, o selecciona **Video**. Para video, pulsa **Consultar calidades** y elige una resolución disponible o **Mejor disponible**; luego pulsa **Descargar video**.
-3. Sigue el resultado de cada enlace en el registro. Si uno falla, los demás continúan. Pulsa **Abrir carpeta** al terminar.
+1. Pega uno o varios enlaces en **Enlaces** (pueden estar dentro de un párrafo) y escoge la carpeta con **Examinar...** o el campo **Guardar en**.
+2. Para audio, marca **Audio WAV** y pulsa **Descargar WAV**. Para video, marca **Video**, pulsa **Consultar calidades**, elige una resolución o **Mejor disponible** y pulsa **Descargar video**.
+3. Mira **Resultados** para ver cada descarga o error. Un enlace fallido no detiene los demás; al terminar, pulsa **Abrir carpeta**.
 
 Con varios videos, el selector muestra las resoluciones comunes. Si cambias los enlaces, vuelve a consultar las calidades. Los archivos existentes no se sobrescriben. El video puede guardarse como MKV al unir audio y video; convertir audio comprimido a WAV no mejora su calidad original.
 
@@ -42,9 +44,9 @@ The first setup may take several minutes. Run **Instalar.cmd** again if it was i
 
 ### Download
 
-1. Paste one or more links, even within a paragraph, and choose an existing destination folder.
-2. Select **Audio WAV** and click **Descargar WAV** (Download WAV), or select **Video**. For video, click **Consultar calidades** (Check qualities), choose an available resolution or **Mejor disponible** (Best available), then click **Descargar video** (Download video).
-3. Follow each link's result in the log. A failed link does not stop the others. Click **Abrir carpeta** (Open folder) when done.
+1. Paste one or more links in **Enlaces** (Links), even within a paragraph. Choose an existing folder with **Examinar...** (Browse) or **Guardar en** (Save to).
+2. For audio, select **Audio WAV** and click **Descargar WAV** (Download WAV). For video, select **Video**, click **Consultar calidades** (Check qualities), choose a resolution or **Mejor disponible** (Best available), then click **Descargar video** (Download video).
+3. Check **Resultados** (Results) for each file or error. One failed link does not stop the rest; click **Abrir carpeta** (Open folder) when done.
 
 For multiple videos, the selector shows resolutions shared by all links. Check qualities again after changing the links. Existing files are never overwritten. Video may be saved as MKV when audio and video need merging; converting compressed audio to WAV does not restore lost quality.
 
