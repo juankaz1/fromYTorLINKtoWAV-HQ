@@ -1,44 +1,66 @@
 # fromYTorLINKtoWAV-HQ
 
-Descarga audio o video desde enlaces compatibles con `yt-dlp` y guardalos en tu computadora. La aplicacion para Windows acepta varios enlaces a la vez, muestra el progreso de cada uno y permite escoger una carpeta de destino. Usa solo contenido para el que tengas permisos de acceso y descarga.
+**Descarga audio WAV y video desde enlaces compatibles con yt-dlp.** Aplicación para Windows con interfaz gráfica, descarga de varios enlaces y selector de calidad de video.
 
-## Instalacion facil en Windows
+[Español](#español) · [English](#english)
 
-1. En la pagina de este repositorio pulsa **Code > Download ZIP** y extrae la carpeta en un lugar permanente (por ejemplo, Documentos). No abras los `.cmd` directamente dentro del ZIP.
-2. Haz doble clic en **Instalar.cmd** dentro de la carpeta extraida. Deja la ventana abierta hasta que diga "Listo"; requiere internet. Detecta Python 3.9 o posterior con Tkinter e ignora los accesos falsos de Microsoft Store. Si no hay Python, intenta instalarlo con `winget`; si no está disponible o falla, descarga el instalador oficial firmado de python.org y lo instala dentro de la carpeta del proyecto. Despues prepara `.venv`, instala `yt-dlp` y una copia privada de FFmpeg. No necesitas configurar el `PATH` manualmente.
-3. Haz doble clic en **Abrir descargador.cmd** para usar la aplicacion.
+## Español
 
-La primera instalacion puede tardar varios minutos. Si se interrumpe, puedes repetir **Instalar.cmd**. Si Windows bloquea la instalacion automatica de Python, instalalo con el asistente grafico de [python.org](https://www.python.org/downloads/windows/) (incluyendo pip y Tcl/Tk) y vuelve a hacer doble clic en **Instalar.cmd**. Sin permiso para instalar programas o acceso a python.org/PyPI no se puede garantizar la instalacion automatica. Es una instalacion local de doble clic, **no un ejecutable autonomo**: descarga los componentes al prepararse por primera vez.
+### Instalar y abrir
 
-## Abrir y usar
+1. Pulsa **Code > Download ZIP** en GitHub. Extrae el ZIP a una carpeta permanente; no ejecutes archivos dentro del ZIP.
+2. Haz doble clic en **Instalar.cmd**. Necesitas internet; espera hasta que diga **Listo**. Detecta Python o intenta instalarlo, y prepara `yt-dlp` y FFmpeg para esta carpeta.
+3. Haz doble clic en **Abrir descargador.cmd**. Para tenerlo en el escritorio, crea un **acceso directo** a ese archivo; deja los archivos originales juntos en la carpeta extraída.
 
-Haz doble clic en **Abrir descargador.cmd** desde la carpeta extraida tras instalar. Para tenerlo en el escritorio, haz clic derecho en el archivo, elige **Mostrar mas opciones > Enviar a > Escritorio (crear acceso directo)**. No muevas el `.cmd` por separado: el acceso directo debe apuntar al archivo que permanece junto al proyecto.
+La instalación inicial puede tardar varios minutos. Puedes ejecutar **Instalar.cmd** otra vez si se interrumpe o para actualizar las dependencias. No es un programa autónomo sin instalación: la primera preparación descarga componentes.
 
-1. Pega uno o varios enlaces en el campo de texto, incluso dentro de un parrafo o separados por comas, espacios o saltos de linea. Los enlaces repetidos se procesan una sola vez.
-2. Elige una carpeta existente con **Examinar...**, escribela en el campo de destino o escoge una usada recientemente.
-3. Para extraer audio, selecciona **Audio WAV** y pulsa **Descargar WAV**. El archivo se convierte a PCM de 24 bits, manteniendo la frecuencia de muestreo de origen.
-4. Para guardar video, selecciona **Video**. Pulsa **Consultar calidades** para ver las resoluciones disponibles; con varios enlaces aparecen solo las comunes a todos. Elige una resolucion o deja **Mejor disponible** para obtener la mejor de cada enlace. Pulsa **Descargar video**.
+### Descargar
 
-La barra y el registro muestran el estado y los errores de cada enlace; si uno falla, los siguientes continuan. Al terminar puedes pulsar **Abrir carpeta**. Si cambias los enlaces despues de consultar calidades, vuelve a consultarlas antes de elegir una resolucion concreta. Nunca se sobrescribe un archivo que ya existe.
+1. Pega uno o varios enlaces, incluso dentro de un párrafo, y elige una carpeta de destino existente.
+2. Selecciona **Audio WAV** y pulsa **Descargar WAV**, o selecciona **Video**. Para video, pulsa **Consultar calidades** y elige una resolución disponible o **Mejor disponible**; luego pulsa **Descargar video**.
+3. Sigue el resultado de cada enlace en el registro. Si uno falla, los demás continúan. Pulsa **Abrir carpeta** al terminar.
 
-Los videos conservan su contenedor si audio y video vienen juntos, o se guardan como MKV cuando FFmpeg debe unir pistas; no se recomprimen para forzar MP4. Convertir audio comprimido a WAV **no recupera calidad perdida**: la calidad final depende del origen.
+Con varios videos, el selector muestra las resoluciones comunes. Si cambias los enlaces, vuelve a consultar las calidades. Los archivos existentes no se sobrescriben. El video puede guardarse como MKV al unir audio y video; convertir audio comprimido a WAV no mejora su calidad original.
 
-## Linea de comandos
+### Si la instalación falla
 
-La interfaz grafica es la opcion para audio y video. El script de terminal permite descargar una pista individual como WAV:
+- Si Windows no permite instalar Python automáticamente, instálalo desde [python.org](https://www.python.org/downloads/windows/) con **pip** y **Tcl/Tk**; después ejecuta **Instalar.cmd** de nuevo.
+- Si falla la descarga de componentes, comprueba la conexión a internet y repite **Instalar.cmd**. En equipos con restricciones de instalación o red puede requerirse permiso del administrador.
+- Si no aparece la ventana, inicia **Abrir descargador.cmd** desde la carpeta extraída y lee el mensaje; completa la preparación con **Instalar.cmd** si falta algún componente.
+
+**Límites:** usa únicamente contenido que tengas derecho a descargar. La compatibilidad de cada sitio depende de `yt-dlp` y puede cambiar. Los enlaces normales de Spotify y Tidal no dan acceso al archivo de audio; la aplicación no evita DRM.
+
+## English
+
+### Install and open
+
+1. Click **Code > Download ZIP** on GitHub. Extract the ZIP to a permanent folder; do not run files from inside the ZIP.
+2. Double-click **Instalar.cmd**. An internet connection is required; wait for **Listo** (Done). It detects Python or attempts to install it, then prepares `yt-dlp` and FFmpeg for this folder.
+3. Double-click **Abrir descargador.cmd**. For desktop access, create a **shortcut** to this file; keep the original files together in the extracted folder.
+
+The first setup may take several minutes. Run **Instalar.cmd** again if it was interrupted or to update dependencies. This is not a standalone executable: initial setup downloads components.
+
+### Download
+
+1. Paste one or more links, even within a paragraph, and choose an existing destination folder.
+2. Select **Audio WAV** and click **Descargar WAV** (Download WAV), or select **Video**. For video, click **Consultar calidades** (Check qualities), choose an available resolution or **Mejor disponible** (Best available), then click **Descargar video** (Download video).
+3. Follow each link's result in the log. A failed link does not stop the others. Click **Abrir carpeta** (Open folder) when done.
+
+For multiple videos, the selector shows resolutions shared by all links. Check qualities again after changing the links. Existing files are never overwritten. Video may be saved as MKV when audio and video need merging; converting compressed audio to WAV does not restore lost quality.
+
+### If setup fails
+
+- If Windows cannot install Python automatically, install it from [python.org](https://www.python.org/downloads/windows/) with **pip** and **Tcl/Tk**, then run **Instalar.cmd** again.
+- If component downloads fail, check your internet connection and retry **Instalar.cmd**. Restricted computers may require administrator approval.
+- If the app does not open, run **Abrir descargador.cmd** from the extracted folder and read its message; use **Instalar.cmd** to repair missing components.
+
+**Limits:** download only content you have permission to use. Site support depends on `yt-dlp` and may change. Ordinary Spotify and Tidal links do not expose the audio file; this app does not bypass DRM.
+
+## Developers / Desarrolladores
+
+The GUI supports both audio and video. The command-line script downloads one link as WAV / La interfaz admite audio y video; el script de terminal descarga un enlace como WAV:
 
 ```powershell
-.\.venv\Scripts\python.exe .\fromYTorLINKtoWAV-HQ.py "https://www.youtube.com/watch?v=ID_DEL_VIDEO" -o "C:\Musica"
-```
-
-La carpeta de destino debe existir; si omites `-o`, se usa la carpeta actual. Usa `--help` para ver sus opciones.
-
-## Limitaciones
-
-La disponibilidad depende de cada sitio y puede cambiar. Se admiten enlaces publicos compatibles con `yt-dlp`, por ejemplo ciertos videos de YouTube y pistas de SoundCloud. Spotify y Tidal no proporcionan el archivo de sus canciones mediante enlaces publicos ordinarios. Esta herramienta no descifra DRM ni graba streams protegidos.
-
-## Pruebas
-
-```powershell
+.\.venv\Scripts\python.exe .\fromYTorLINKtoWAV-HQ.py "https://www.youtube.com/watch?v=VIDEO_ID" -o "C:\Musica"
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
