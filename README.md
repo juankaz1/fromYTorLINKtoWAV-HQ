@@ -5,10 +5,10 @@ Descarga audio o video desde enlaces compatibles con `yt-dlp` y guardalos en tu 
 ## Instalacion facil en Windows
 
 1. En la pagina de este repositorio pulsa **Code > Download ZIP** y extrae la carpeta en un lugar permanente (por ejemplo, Documentos). No abras los `.cmd` directamente dentro del ZIP.
-2. Haz doble clic en **Instalar.cmd** dentro de la carpeta extraida. Deja la ventana abierta hasta que diga "Listo"; requiere internet. Detecta Python 3.9 o posterior con Tkinter y, si falta, intenta instalar Python 3.12 para tu usuario con `winget`. Despues prepara `.venv`, instala `yt-dlp` y una copia privada de FFmpeg. No necesitas instalar FFmpeg ni configurar el `PATH` manualmente.
+2. Haz doble clic en **Instalar.cmd** dentro de la carpeta extraida. Deja la ventana abierta hasta que diga "Listo"; requiere internet. Detecta Python 3.9 o posterior con Tkinter e ignora los accesos falsos de Microsoft Store. Si no hay Python, intenta instalarlo con `winget`; si no está disponible o falla, descarga el instalador oficial firmado de python.org y lo instala dentro de la carpeta del proyecto. Despues prepara `.venv`, instala `yt-dlp` y una copia privada de FFmpeg. No necesitas configurar el `PATH` manualmente.
 3. Haz doble clic en **Abrir descargador.cmd** para usar la aplicacion.
 
-Si `winget` no esta disponible o falla, instala [Python para Windows](https://www.python.org/downloads/windows/) con pip y Tcl/Tk, y ejecuta **Instalar.cmd** otra vez. Si el instalador acaba de instalar Python pero aun no lo detecta, cierra y vuelve a abrir el Explorador antes de repetirlo. El proceso es seguro de repetir cuando quieras actualizar `yt-dlp`. Es una instalacion local de doble clic, **no un ejecutable autonomo**: necesita Python disponible en el equipo y conexion a internet durante la preparacion.
+La primera instalacion puede tardar varios minutos. Si se interrumpe, puedes repetir **Instalar.cmd**. Si Windows bloquea la instalacion automatica de Python, instalalo con el asistente grafico de [python.org](https://www.python.org/downloads/windows/) (incluyendo pip y Tcl/Tk) y vuelve a hacer doble clic en **Instalar.cmd**. Sin permiso para instalar programas o acceso a python.org/PyPI no se puede garantizar la instalacion automatica. Es una instalacion local de doble clic, **no un ejecutable autonomo**: descarga los componentes al prepararse por primera vez.
 
 ## Abrir y usar
 

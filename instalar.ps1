@@ -2,15 +2,20 @@ $ErrorActionPreference = 'Stop'
 $project = $PSScriptRoot
 $venvPython = Join-Path $project '.venv\Scripts\python.exe'
 $localFfmpeg = Join-Path $project '.tools\ffmpeg.exe'
+$projectPython = Join-Path $project '.runtime\Python312\python.exe'
 
 function Find-Python {
     $candidates = @()
+    if (Test-Path $projectPython) {
+        $candidates += ,@($projectPython)
+    }
     if (Get-Command py -ErrorAction SilentlyContinue) {
         $candidates += ,@('py', '-3')
     }
     foreach ($name in @('python', 'python3')) {
-        if (Get-Command $name -ErrorAction SilentlyContinue) {
-            $candidates += ,@($name)
+        $command = Get-Command $name -ErrorAction SilentlyContinue
+        if ($command -and $command.Source -notlike '*\Microsoft\WindowsApps\*') {
+            $candidates += ,@($command.Source)
         }
     }
     $localPython = Join-Path $env:LOCALAPPDATA 'Programs\Python'
@@ -22,29 +27,68 @@ function Find-Python {
     foreach ($candidate in $candidates) {
         $executable = $candidate[0]
         $arguments = @($candidate | Select-Object -Skip 1)
-        $version = & $executable @arguments -c 'import sys, tkinter, venv; assert sys.version_info >= (3, 9); print(sys.version.split()[0])' 2>$null
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "Python $version encontrado: $executable $($arguments -join ' ')"
-            return ,$candidate
+        try {
+            $version = & $executable @arguments -c 'import sys, tkinter, venv; assert sys.version_info >= (3, 9); print(sys.version.split()[0])' 2>$null
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "Python $version encontrado: $executable $($arguments -join ' ')"
+                return ,$candidate
+            }
+        } catch {
+            continue
         }
     }
     return $null
 }
 
+function Install-ProjectPython {
+    $url = 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe'
+    $installer = Join-Path $env:TEMP 'fromYTorLINKtoWAV-HQ-python-3.12.10.exe'
+    $target = Split-Path $projectPython
+    if (-not [Environment]::Is64BitOperatingSystem) {
+        throw 'La instalacion automatica requiere Windows de 64 bits. Instala Python desde python.org/downloads/windows/.'
+    }
+    Write-Host 'Descargando Python oficial para este proyecto (requiere internet)...'
+    try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-WebRequest -Uri $url -OutFile $installer -UseBasicParsing
+        $signature = Get-AuthenticodeSignature -FilePath $installer
+        if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Python Software Foundation') {
+            throw 'La firma digital del instalador de Python no es valida.'
+        }
+        Write-Host 'Instalando Python sin modificar el sistema...'
+        $arguments = '/quiet InstallAllUsers=0 PrependPath=0 Include_pip=1 Include_tcltk=1 Include_test=0 TargetDir="' + $target + '"'
+        $process = Start-Process -FilePath $installer -ArgumentList $arguments -PassThru
+        if (-not $process.WaitForExit(300000)) {
+            $process.Kill()
+            throw 'La instalacion automatica de Python no respondio. Instala Python desde https://www.python.org/downloads/windows/ y ejecuta Instalar.cmd otra vez.'
+        }
+        if ($process.ExitCode -ne 0 -or -not (Test-Path $projectPython)) {
+            throw "La instalacion de Python fallo (codigo $($process.ExitCode)). Instala Python desde https://www.python.org/downloads/windows/ y repite Instalar.cmd."
+        }
+    } finally {
+        Remove-Item $installer -Force -ErrorAction SilentlyContinue
+    }
+}
+
 try {
     $python = Find-Python
     if (-not $python) {
-        Write-Host 'No se encontro Python 3.9+ con Tkinter. Intentando instalar Python 3.12 con winget...'
-        if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-            throw 'Instala Python desde https://www.python.org/downloads/windows/ (incluye pip y Tcl/Tk) y vuelve a ejecutar Instalar.cmd.'
+        Write-Host 'No se encontro Python 3.9+ con Tkinter.'
+        if (Get-Command winget -ErrorAction SilentlyContinue) {
+            Write-Host 'Intentando instalar Python 3.12 con winget...'
+            try {
+                & winget install --id Python.Python.3.12 --exact --source winget --scope user --accept-package-agreements --accept-source-agreements --disable-interactivity
+            } catch {
+                Write-Host 'winget no pudo completar la instalacion; usando instalador oficial.'
+            }
+            $python = Find-Python
         }
-        & winget install --id Python.Python.3.12 --exact --source winget --scope user --accept-package-agreements --accept-source-agreements --disable-interactivity
-        if ($LASTEXITCODE -ne 0) {
-            throw 'winget no pudo instalar Python. Instalalo desde https://www.python.org/downloads/windows/ y vuelve a ejecutar Instalar.cmd.'
-        }
-        $python = Find-Python
         if (-not $python) {
-            throw 'Python se instalo, pero aun no se encuentra. Cierra y abre el Explorador de archivos, luego repite Instalar.cmd.'
+            Install-ProjectPython
+            $python = Find-Python
+        }
+        if (-not $python) {
+            throw 'Python no quedo disponible. Comprueba la conexion y vuelve a ejecutar Instalar.cmd.'
         }
     }
 
